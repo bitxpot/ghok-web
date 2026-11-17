@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Ghok farm app prices in Ghana: farm plans, Ghok Eye cameras and support.">
+<style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style>
+<title>Ghok Price Builder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: builder steps on the left, an order ticket on the right (stacks on phones) */
+:root{
+  --bg:#f3f5ef; --card:#ffffff; --ink:#1d2a1f; --muted:#5d6b5f; --line:#d9dfd3;
+  --green:#1f7a3f; --green-tint:#e3f1e6; --amber:#9a6200; --amber-tint:#fdf1d8;
+  --ticket:#fffdf6; --ticket-line:#e2dccb;
+  --display:"Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111712; --card:#19211b; --ink:#e6eee6; --muted:#9aaa9c; --line:#2c372e;
+  --green:#5cc47f; --green-tint:#1c3324; --amber:#f0b54a; --amber-tint:#33290f;
+  --ticket:#1d241e; --ticket-line:#333d34; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111712; --card:#19211b; --ink:#e6eee6; --muted:#9aaa9c; --line:#2c372e;
+  --green:#5cc47f; --green-tint:#1c3324; --amber:#f0b54a; --amber-tint:#33290f;
+  --ticket:#1d241e; --ticket-line:#333d34; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
+.wrap{max-width:1040px;margin:0 auto;padding-block:28px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,40px);margin:0;text-wrap:balance;letter-spacing:-.01em}
+header p{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;margin-top:24px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:minmax(0,1fr)}}
+.steps{display:flex;flex-direction:column;gap:14px;min-width:0}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.step h2{font-family:var(--display);font-weight:600;font-size:19px;margin:0 0 2px;display:flex;gap:10px;align-items:baseline}
+.step h2 .n{font-size:13px;color:var(--green);letter-spacing:.06em;text-transform:uppercase;font-family:var(--body);font-weight:700}
+.hint{color:var(--muted);font-size:14px;margin:0 0 12px}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.field{display:flex;flex-direction:column;gap:4px;flex:1 1 140px;min-width:0}
+label,.lbl{font-size:13px;font-weight:700;color:var(--muted)}
+select,input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;box-sizing:border-box}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.choice{text-align:left;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.choice b{font-size:15px}
+.choice span{font-size:13px;color:var(--muted)}
+.choice .p{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700;font-size:14px}
+.choice[aria-pressed="true"]{border:2px solid var(--green);background:var(--green-tint);padding:9px 11px}
+.choice:disabled{opacity:.45;cursor:not-allowed}
+.choice .nope{font-size:12.5px;color:var(--muted);font-style:italic}
+.soon{opacity:.55;background:var(--bg);border-style:dashed}
+.soon h2 .n{color:var(--muted)}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{font:inherit;font-size:20px;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.stepper output{min-width:2.5ch;text-align:center;font-family:var(--display);font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.note{background:var(--amber-tint);color:var(--amber);border-radius:10px;padding:8px 12px;font-size:14px;margin-top:10px}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--card)}
+.toggle button{font:inherit;font-size:14px;border:0;background:none;color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--green);color:var(--card);font-weight:700}
+
+/* order ticket */
+.ticket{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));background:var(--ticket);border:1px solid var(--ticket-line);border-radius:6px;padding:18px 18px 14px;font-variant-numeric:tabular-nums;
+  -webkit-mask:radial-gradient(circle 7px at 50% 100%,transparent 6.5px,#000 7px) 0 0/18px 100% repeat-x;mask:radial-gradient(circle 7px at 50% 100%,transparent 6.5px,#000 7px) 0 0/18px 100% repeat-x;padding-bottom:26px}
+@media (max-width:820px){.ticket{position:static}}
+.ticket .head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.ticket h3{font-family:var(--display);font-size:18px;margin:0}
+.lines{list-style:none;margin:14px 0 0;padding:0;border-top:1px dashed var(--ticket-line)}
+.lines li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--ticket-line);font-size:15px}
+.lines li small{display:block;color:var(--muted);font-size:12.5px}
+.lines li .amt{white-space:nowrap;font-weight:700}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px}
+.total .big{font-family:var(--display);font-weight:800;font-size:34px;color:var(--green)}
+.sub{color:var(--muted);font-size:13.5px;margin:2px 0 0}
+.once{margin-top:14px;padding-top:10px;border-top:2px solid var(--ticket-line)}
+.once .total .big{font-size:22px;color:var(--ink)}
+.fine{color:var(--muted);font-size:12.5px;margin-top:12px}
+.tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--amber-tint);color:var(--amber);border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+@media (prefers-reduced-motion:no-preference){.total .big{transition:color .2s}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Build your Ghok plan</h1>
+    <p>Pick your farm plan, add Ghok Eye cameras if you want them, and choose how you'd like support. Your price updates as you go. Prices are in Ghana cedis.</p>
+  </header>
+
+  <div class="grid">
+    <div class="steps">
+      <section class="step" aria-labelledby="s1">
+        <h2 id="s1"><span class="n">Step 1</span> Your farm</h2>
+        <p class="hint">This tells us the smallest plan that fits. Count your biggest flock or herd size, not the yearly total.</p>
+        <div class="row">
+          <div class="field"><label for="species">Main animals</label><select id="species">
+            <option value="birds">Poultry (layers, broilers)</option>
+            <option value="goats">Goats or sheep</option>
+            <option value="pigs">Pigs</option>
+            <option value="cattle">Cattle</option>
+          </select></div>
+          <div class="field"><label for="birds" id="countLbl">How many birds</label><input id="birds" type="number" min="0" step="50" value="1200" inputmode="numeric"></div>
+          <div class="field"><label for="workers">Workers (not counting you)</label><input id="workers" type="number" min="0" step="1" value="4" inputmode="numeric"></div>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="s2">
+        <h2 id="s2"><span class="n">Step 2</span> Farm plan</h2>
+        <p class="hint">Every plan has all the record keeping, Today tasks, insights and offline use.</p>
+        <div class="choices" id="plans" role="group" aria-label="Farm plan"></div>
+        <div class="note" id="planNote" hidden></div>
+      </section>
+
+      <section class="step" aria-labelledby="s3">
+        <h2 id="s3"><span class="n">Step 3</span> Ghok Eye cameras</h2>
+        <p class="hint">Counts your birds from photos, shows the latest picture of each pen, and Ghok Guard warns you about people in the pen at night. GH₵25 a month for each camera.</p>
+        <div class="stepper">
+          <button type="button" id="camMinus" aria-label="One camera fewer">−</button>
+          <output id="cams" aria-live="polite">2</output>
+          <button type="button" id="camPlus" aria-label="One camera more">+</button>
+          <span class="hint" style="margin:0 0 0 6px">cameras</span>
+        </div>
+      </section>
+
+      <section class="step soon" aria-labelledby="sw">
+        <h2 id="sw"><span class="n">Coming soon</span> Ghok Weighing <span class="tag">Not yet available</span></h2>
+        <p class="hint" style="margin:0">A Bluetooth scale for birds and goats. Weigh one bird or a whole basket; the average and range go straight to Insights in the app.</p>
+      </section>
+
+      <section class="step" aria-labelledby="s4" id="supportStep">
+        <h2 id="s4"><span class="n">Step 4</span> Support for your box</h2>
+        <p class="hint">Choose what suits you. Remote help through the app is always free.</p>
+        <div class="choices" id="support" role="group" aria-label="Support">
+          <button type="button" class="choice" data-v="monthly"><b>Monthly care</b><span>Visits when you need them, no call-out fee</span><span class="p">GH₵25 / month</span></button>
+          <button type="button" class="choice" data-v="visit"><b>Pay per visit</b><span>Nothing monthly; pay only when we come</span><span class="p">GH₵150 / visit</span></button>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="s5" id="dataStep">
+        <h2 id="s5"><span class="n">Step 5</span> Internet for the box</h2>
+        <p class="hint">The box sends a few small photos a day. Wi-Fi or cable first, mobile data when that fails.</p>
+        <div class="choices" id="data" role="group" aria-label="Internet">
+          <button type="button" class="choice" data-v="own"><b>My own SIM or Wi-Fi</b><span>You top up your own bundle</span><span class="p">Your bundle</span></button>
+          <button type="button" class="choice" data-v="ghok"><b>Ghok data SIM</b><span>We keep it topped up for you</span><span class="p">Price to be confirmed</span></button>
+        </div>
+      </section>
+    </div>
+
+    <aside class="ticket" aria-labelledby="tk">
+      <div class="head">
+        <h3 id="tk">Your price</h3>
+        <div class="toggle" role="group" aria-label="Billing period">
+          <button type="button" id="bm" aria-pressed="true">Monthly</button>
+          <button type="button" id="by" aria-pressed="false">Yearly</button>
+        </div>
+      </div>
+      <ul class="lines" id="lines"></ul>
+      <div class="total"><span>Total</span><span class="big" id="total">—</span></div>
+      <p class="sub" id="totalSub"></p>
+
+      <div class="once" id="onceBox">
+        <div class="total"><span>Pay once for hardware</span><span class="big" id="once">—</span></div>
+        <p class="sub" id="onceSub"></p>
+      </div>
+      <p class="fine">Pay with MoMo or card on Paystack. Quote your farm code when you pay so it lands on your farm. Yearly plans cost 10 months: 2 months free.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+const PLANS=[
+  {id:'starter',name:'Starter',m:40,max:{birds:500,goats:50,pigs:25,cattle:10},workers:3,who:'You + 3 workers'},
+  {id:'growing',name:'Growing',m:80,max:{birds:3000,goats:300,pigs:150,cattle:60},workers:6,who:'You + 6 workers'},
+  {id:'commercial',name:'Commercial',m:200,max:{birds:10000,goats:1000,pigs:500,cattle:200},workers:20,who:'You + 20 workers'},
+];
+const SPECIES={birds:{word:'birds',step:50,eg:1200},goats:{word:'goats or sheep',step:5,eg:120},pigs:{word:'pigs',step:5,eg:60},cattle:{word:'cattle',step:1,eg:20}};
+const CAM=25, SUPPORT_M=25, VISIT=150, BOX=3000, MAXCAM=8;
+const st={plan:'growing',cams:2,support:'monthly',data:'own',yearly:false};
+const $=id=>document.getElementById(id);
+const fmt=n=>'GH₵'+n.toLocaleString('en-GH');
+const num=el=>Math.max(0,parseInt(el.value,10)||0);
+
+function sp(){return $('species').value}
+function fits(p){return num($('birds'))<=p.max[sp()] && num($('workers'))<=p.workers}
+function smallest(){return PLANS.find(fits)}
+
+function renderPlans(){
+  const box=$('plans'); box.innerHTML='';
+  const need=smallest();
+  if(!fits(PLANS.find(p=>p.id===st.plan)) && need) st.plan=need.id;
+  for(const p of PLANS){
+    const b=document.createElement('button');
+    b.type='button';b.className='choice';b.id='plan-'+p.id;
+    b.disabled=!fits(p);
+    b.setAttribute('aria-pressed',st.plan===p.id);
+    b.innerHTML=`<b>${p.name}</b><span>Up to ${p.max[sp()].toLocaleString()} ${SPECIES[sp()].word} · ${p.who}</span><span class="nope">Farm app only: Ghok Eye is extra</span><span class="p">${fmt(p.m)} / month</span>`;
+    b.onclick=()=>{st.plan=p.id;render()};
+    box.appendChild(b);
+  }
+  const n=$('planNote');
+  if(!need){n.hidden=false;n.textContent='Your farm is bigger than Commercial. Talk to us for a farm price.'}
+  else if(need.id!=='starter'){n.hidden=false;n.textContent=`Smaller plans are greyed out: your farm needs at least ${need.name}.`}
+  else n.hidden=true;
+}
+
+function pick(groupId,key){
+  for(const b of $(groupId).querySelectorAll('.choice')){
+    b.setAttribute('aria-pressed',b.dataset.v===st[key]);
+    b.onclick=()=>{st[key]=b.dataset.v;render()};
+  }
+}
+
+function render(){
+  renderPlans(); pick('support','support'); pick('data','data');
+  $('cams').textContent=st.cams;
+  $('camMinus').disabled=st.cams<=0; $('camPlus').disabled=st.cams>=MAXCAM;
+  const eye=st.cams>0;
+  $('supportStep').hidden=!eye; $('dataStep').hidden=!eye; $('onceBox').hidden=!eye;
+  $('bm').setAttribute('aria-pressed',!st.yearly); $('by').setAttribute('aria-pressed',st.yearly);
+
+  const k=st.yearly?10:1, per=st.yearly?'/ year':'/ month';
+  const plan=PLANS.find(p=>p.id===st.plan) || PLANS[PLANS.length-1];
+  const lines=[[`${plan.name} plan`,plan.who,plan.m*k]];
+  if(eye){
+    lines.push([`Ghok Eye × ${st.cams}`,`${fmt(CAM)} per camera a month`,CAM*st.cams*k]);
+    if(st.support==='monthly') lines.push(['Monthly care','Visits included',SUPPORT_M*k]);
+    else lines.push(['Pay per visit',`${fmt(VISIT)} each time we come`,null]);
+    if(st.data==='ghok') lines.push(['Ghok data SIM','Price to be confirmed',null]);
+  }
+  $('lines').innerHTML=lines.map(([a,b,v])=>`<li><span>${a}<small>${b}</small></span><span class="amt">${v==null?'—':fmt(v)}</span></li>`).join('');
+  const total=lines.reduce((s,l)=>s+(l[2]||0),0);
+  $('total').textContent=fmt(total)+' '+per;
+  const extras=[];
+  if(st.yearly) extras.push(`Same as ${fmt(Math.round(total/12))} a month. You save ${fmt(total/10*2)}.`);
+  if(eye&&st.support==='visit') extras.push(`Plus ${fmt(VISIT)} for any visit.`);
+  if(eye&&st.data==='ghok') extras.push('Plus Ghok data once its price is set.');
+  $('totalSub').textContent=extras.join(' ');
+  $('once').textContent='from '+fmt(BOX);
+  $('onceSub').textContent=`Ghok box, set up on your farm. Cameras quoted on your first visit, ${st.cams} needed.`;
+}
+
+$('camMinus').onclick=()=>{st.cams=Math.max(0,st.cams-1);render()};
+$('camPlus').onclick=()=>{st.cams=Math.min(MAXCAM,st.cams+1);render()};
+$('bm').onclick=()=>{st.yearly=false;render()};
+$('by').onclick=()=>{st.yearly=true;render()};
+$('species').onchange=()=>{const s=SPECIES[sp()];$('countLbl').textContent='How many '+s.word;$('birds').step=s.step;$('birds').value=s.eg;render()};
+$('birds').oninput=render; $('workers').oninput=render;
+render();
+</script>
+</body>
+</html>
